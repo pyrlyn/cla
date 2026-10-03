@@ -363,16 +363,17 @@ public.
 
 ### 5.2 Checklist: build the action
 
-- [ ] Scaffold repository (`action.yml` node24, TypeScript, vitest, bundler, CI, Dependabot).
-- [ ] `people.ts` with pagination, opener, `Co-authored-by`, unknown emails.
-- [ ] `signing.ts` strict phrase matching, ported tests for quotes and extra text.
-- [ ] `store.ts` new schema, create when missing, retry on 409, never rewrite old entries.
-- [ ] `membership.ts` with app token / PAT / public fallback, clear message on 403.
-- [ ] `report.ts` sticky comment, commit status texts from 2.5, step summary.
-- [ ] `lock.ts` merged only, unlock on reopen.
-- [ ] Integration tests: outsider unsigned, signs, recheck, two signers race, member, bot,
+- [x] Scaffold repository (`action.yml` node24, TypeScript, vitest, bundler, CI, Dependabot).
+- [x] `people.ts` with pagination, opener, `Co-authored-by`, unknown emails.
+- [x] `signing.ts` strict phrase matching, ported tests for quotes and extra text.
+- [x] `store.ts` new schema, create when missing, retry on 409, never rewrite old entries.
+- [x] `membership.ts` with app token / PAT / public fallback, clear message on 403.
+- [x] `report.ts` sticky comment, commit status texts from 2.5, step summary.
+- [x] `lock.ts` merged only, unlock on reopen.
+- [x] Integration tests: outsider unsigned, signs, recheck, two signers race, member, bot,
       impersonation, unknown email, outdated version, missing token, empty signatures repository.
-- [ ] `README.md` usage; `NOTICE` for ported code; release `v1.0.0`.
+- [ ] `README.md` usage; `NOTICE` for ported code; release `v1.0.0`. README and NOTICE are in
+      the action pull request. Tag `v1.0.0` from `main` after that pull request merges.
 
 ### 5.3 Checklist: prepare credentials (organization owner)
 

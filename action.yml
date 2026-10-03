@@ -1,0 +1,84 @@
+name: pyrlyn CLA
+description: Check the pyrlyn Contributor License Agreement on a pull request
+author: pyrlyn
+
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  github-token:
+    description: Token for the pull request comment, commit status, and conversation lock
+    required: true
+    default: ${{ github.token }}
+  cla-token:
+    description: Token for signatures and organization membership (GitHub App token or PAT)
+    required: false
+    default: ""
+  org:
+    description: Organization whose members pass without a signature when members-pass is true
+    required: false
+    default: pyrlyn
+  members-pass:
+    description: Count current organization members as covered
+    required: false
+    default: "true"
+  allowlist:
+    description: Comma-separated bot logins. A wildcard is allowed only when the entry ends in [bot]
+    required: false
+    default: dependabot[bot],github-actions[bot],renovate[bot]
+  signatures-repository:
+    description: owner/name of the repository that stores signatures
+    required: false
+    default: pyrlyn/cla-signatures
+  signatures-branch:
+    description: Branch of the signatures file
+    required: false
+    default: main
+  signatures-path:
+    description: Path of the signatures file
+    required: false
+    default: signatures/cla.json
+  document-url:
+    description: URL of the CLA text linked from the pull request comment
+    required: true
+  document-url-ru:
+    description: URL of the Russian CLA text
+    required: false
+    default: ""
+  cla-version:
+    description: CLA version stored with a new signature
+    required: true
+  document-sha256:
+    description: SHA-256 hex digest of the CLA file at document-url
+    required: true
+  minimum-version:
+    description: Oldest signature version that still covers a person. Defaults to cla-version
+    required: false
+    default: ""
+  sign-phrase:
+    description: Comment a contributor posts, alone, to sign
+    required: false
+    default: I have read the CLA Document and I hereby sign the CLA
+  status-context:
+    description: Commit status context required by rulesets
+    required: false
+    default: pyrlyn/cla
+  lock-after-merge:
+    description: Lock the conversation after the pull request is merged, and unlock it if reopened
+    required: false
+    default: "true"
+  require-opener-as-author:
+    description: Fail when the opener is not an author or co-author, unless they are an organization member
+    required: false
+    default: "true"
+
+outputs:
+  covered:
+    description: "true when every checked person is covered and the opener guard passes"
+  missing:
+    description: JSON array of logins that still need a signature
+
+runs:
+  using: node24
+  main: dist/index.js
