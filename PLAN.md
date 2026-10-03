@@ -1,6 +1,7 @@
 # pyrlyn/cla: plan
 
-Status: plan, nothing implemented yet. Written 2026-10-03.
+Status: the action (5.2) is implemented; credentials, the infra switch and enabling (5.3–5.6) are
+still to do. Written 2026-10-03.
 This English file is the source of truth. Translations: [Russian](docs/ru/PLAN.md),
 [Ukrainian](docs/uk/PLAN.md). If a translation differs, this file prevails.
 
