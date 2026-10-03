@@ -18,7 +18,7 @@ export interface CommentFixture {
   body: string;
   created_at: string;
   html_url: string;
-  user: { login: string; id: number } | null;
+  user: { login: string; id: number; type?: string } | null;
 }
 
 export interface StatusCall {
@@ -102,7 +102,7 @@ export class FakeGithub {
           body: body.body,
           created_at: "2026-10-03T12:00:00Z",
           html_url: `https://github.com/pyrlyn/cox/pull/${issue}#issuecomment-${id}`,
-          user: { login: "github-actions[bot]", id: 41898282 },
+          user: { login: "github-actions[bot]", id: 41898282, type: "Bot" },
         };
         this.comments.push(comment);
         this.created.push(body.body);

@@ -204,7 +204,11 @@ async function upsertComment(gh: Github, ref: PullRef, body: string): Promise<st
     issue_number: ref.number,
     per_page: 100,
   });
-  const existing = comments.find((comment) => (comment.body ?? "").includes(MARKER));
+  // Only a bot's comment is ours: anyone can paste the marker into a comment
+  // of their own, and the check must not edit it or link the status to it.
+  const existing = comments.find(
+    (comment) => comment.user?.type === "Bot" && (comment.body ?? "").includes(MARKER),
+  );
   if (existing) {
     if ((existing.body ?? "") !== body) {
       await gh.rest.issues.updateComment({

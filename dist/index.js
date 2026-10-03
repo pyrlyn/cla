@@ -26684,7 +26684,9 @@ async function upsertComment(gh, ref, body) {
     issue_number: ref.number,
     per_page: 100
   });
-  const existing = comments.find((comment) => (comment.body ?? "").includes(MARKER));
+  const existing = comments.find(
+    (comment) => comment.user?.type === "Bot" && (comment.body ?? "").includes(MARKER)
+  );
   if (existing) {
     if ((existing.body ?? "") !== body) {
       await gh.rest.issues.updateComment({

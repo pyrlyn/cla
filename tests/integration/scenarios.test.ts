@@ -93,6 +93,27 @@ describe("pull request check", () => {
     expect(fake.created[0]).not.toContain("@");
   });
 
+  it("does not take over a user's comment that carries the marker", async () => {
+    const fake = new FakeGithub();
+    fake.commits = [aliceCommit()];
+    fake.comments = [
+      {
+        id: 7,
+        body: "<!-- pyrlyn-cla -->\nAll contributors are covered.",
+        created_at: "2026-10-02T00:00:00Z",
+        html_url: "https://github.com/pyrlyn/cox/pull/1#issuecomment-7",
+        user: { login: "mallory", id: 66, type: "User" },
+      },
+    ];
+    use(fake);
+    setInputs();
+    await runEvent("pull_request_target", opened());
+    expect(fake.updated).toEqual([]);
+    expect(fake.created).toHaveLength(1);
+    expect(fake.comments[0]?.body).toBe("<!-- pyrlyn-cla -->\nAll contributors are covered.");
+    expect(fake.statuses[0]?.target_url).not.toContain("#issuecomment-7");
+  });
+
   it("does not treat a quoted phrase as a signature", async () => {
     const fake = new FakeGithub();
     fake.commits = [aliceCommit()];
