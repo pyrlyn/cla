@@ -1,0 +1,16 @@
+pyrlyn/cla
+Copyright 2026 pyrlyn
+
+This product includes code derived from the following Apache-2.0 projects:
+
+- contributor-assistant/github-action
+  https://github.com/contributor-assistant/github-action
+- iainmcgin/cla-github-action v3.2.0 (0d27e5a16278d4adb6b0c4b92f08ad27b0a21dc8)
+  https://github.com/iainmcgin/cla-github-action
+
+Ported functions:
+
+- commentContainsSignature — iainmcgin/cla-github-action src/pullrequest/signatureComment.ts
+  (src/signing.ts)
+- parseCoAuthors — iainmcgin/cla-github-action src/shared/coAuthors.ts
+  (src/coAuthors.ts)
