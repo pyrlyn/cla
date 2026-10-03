@@ -1,0 +1,21 @@
+# Configuration for pyrlyn/infra's ci.yml, called from pipeline.yml (docs/config.md in
+# pyrlyn/infra). The action's build and tests stay in ci.yml (npm); this file turns on the scans.
+version: 1
+
+codeql:
+  # The workflows and the TypeScript action (`build-mode: none`).
+  languages: [actions, javascript-typescript]
+
+# SonarCloud stays off until a SonarCloud project for pyrlyn/cla exists and SONAR_TOKEN is
+# available to this repository. `enabled: true` turns it on.
+sonarcloud:
+  enabled: false
+
+# Snyk is switched off (flag), as in the other pyrlyn repositories: the snyk job is skipped and
+# the gate counts it as passed. `enabled: true` turns it back on.
+snyk:
+  enabled: false
+
+# No .NET project here: the dotnet job would only pass as a no-op.
+dotnet:
+  enabled: false
