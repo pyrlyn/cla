@@ -2,6 +2,17 @@
 # pyrlyn/infra). The action's build and tests stay in ci.yml (npm); this file turns on the scans.
 version: 1
 
+# Docs-only pull requests (pyrlyn/infra docs/config.md, "Docs-only changes"): when every changed
+# file is documentation (PLAN.md, docs/, AGENTS.md, ...), infra's scans are skipped and the gate
+# counts them as passed; ci.yml's `config` job reads the same verdict and skips the npm job.
+# README.md is the action's documentation on the Marketplace and CHANGELOG.md is read by
+# releases, so they and anything under src/ or tests/ run the full CI.
+docs-only:
+  enabled: true
+  exclude:
+    - '^(src|tests|dist)/'
+    - '^(README|CHANGELOG)\.md$'
+
 codeql:
   # The workflows and the TypeScript action (`build-mode: none`).
   languages: [actions, javascript-typescript]
