@@ -1,6 +1,6 @@
 # pyrlyn/cla
 
-A GitHub Action that checks the pyrlyn Contributor License Agreement on pull requests. It replaces CLA Assistant Lite (`contributor-assistant/github-action`, archived) in the reusable `cla` workflow of [`pyrlyn/infra`](https://github.com/pyrlyn/infra).
+A GitHub Action that checks the pyrlyn Contributor License Agreement on pull requests. It replaces CLA Assistant Lite (`contributor-assistant/github-action`, archived) in the reusable `cla` workflow of [`pyrlyn/ci`](https://github.com/pyrlyn/ci).
 
 One signature covers every pyrlyn repository. Signatures are appended to `signatures/cla.json` in `pyrlyn/cla-signatures`. The pull request decision is the commit status **`pyrlyn/cla`**, not the job result: a green job with a failing status means someone still has to sign, and a red job means the action itself broke and no status was set.
 
@@ -8,7 +8,7 @@ One signature covers every pyrlyn repository. Signatures are appended to `signat
 - [`docs/ru/PLAN.md`](docs/ru/PLAN.md) — Russian translation
 - [`docs/uk/PLAN.md`](docs/uk/PLAN.md) — Ukrainian translation
 
-The agreement text lives in `pyrlyn/infra`: [`CLA.md`](https://github.com/pyrlyn/infra/blob/main/CLA.md) and [`CLA.ru.md`](https://github.com/pyrlyn/infra/blob/main/CLA.ru.md).
+The agreement text lives in `pyrlyn/ci`: [`CLA.md`](https://github.com/pyrlyn/ci/blob/main/CLA.md) and [`CLA.ru.md`](https://github.com/pyrlyn/ci/blob/main/CLA.ru.md).
 
 ## Usage
 
@@ -50,8 +50,8 @@ jobs:
       - uses: pyrlyn/cla@<sha> # v1.0.0
         with:
           cla-token: ${{ steps.app.outputs.token }}
-          document-url: https://github.com/pyrlyn/infra/blob/<sha>/CLA.md
-          document-url-ru: https://github.com/pyrlyn/infra/blob/<sha>/CLA.ru.md
+          document-url: https://github.com/pyrlyn/ci/blob/<sha>/CLA.md
+          document-url-ru: https://github.com/pyrlyn/ci/blob/<sha>/CLA.ru.md
           cla-version: "1.0"
           document-sha256: "<sha256 of CLA.md>"
           minimum-version: "1.0"

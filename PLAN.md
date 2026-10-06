@@ -7,7 +7,7 @@ This English file is the source of truth. Translations: [Russian](docs/ru/PLAN.m
 
 `pyrlyn/cla` will be a small GitHub Action, owned by the organization, that checks the pyrlyn
 Contributor License Agreement on pull requests. It replaces CLA Assistant Lite
-(`contributor-assistant/github-action`), which `pyrlyn/infra` wraps today and which was archived on
+(`contributor-assistant/github-action`), which `pyrlyn/ci` wraps today and which was archived on
 2026-03-23.
 
 ## 0. Goals and non-goals
@@ -31,7 +31,7 @@ employees; handled by contacting the Licensor, `CLA.md` 11.4), DCO sign-off, oth
 Two code bases were read for this plan:
 
 - **Upstream** `contributor-assistant/github-action`, archived, last commit `58daaf8`
-  (2026-03-23). `pyrlyn/infra` pins tag `v2.6.1` = `ca4a40a7d1004f18d9960b404b97e5f30a505a08`.
+  (2026-03-23). `pyrlyn/ci` pins tag `v2.6.1` = `ca4a40a7d1004f18d9960b404b97e5f30a505a08`.
   Apache-2.0.
 - **Fork** `iainmcgin/cla-github-action`, `v3.2.0` = `0d27e5a16278d4adb6b0c4b92f08ad27b0a21dc8`
   (2026-06-17). Apache-2.0. Diverges at `58daaf8`; see its `CHANGELOG.md`.
@@ -78,7 +78,7 @@ Two code bases were read for this plan:
 - Upstream bug: `src/setupClaCheck.ts` compares `error.status === "404"` (a string) with a numeric
   status, so the "create the file on first run" branch never runs. With `v2.6.1` a missing
   `cla.json` ends in "Could not retrieve repository contents. Status: 404". The fork fixed it
-  (`c5254b2`). `pyrlyn/infra` `docs/cla.md` currently says the action creates the file; with the
+  (`c5254b2`). `pyrlyn/ci` `docs/cla.md` currently says the action creates the file; with the
   pinned version that is not true.
 
 ### 1.3 Check logic
@@ -181,7 +181,7 @@ outside authors does not cover those authors.
 
 ### 2.4 CLA text and versions
 
-- Text: `pyrlyn/infra` `CLA.md` "Version 1.0 (draft)" (English, canonical) and `CLA.ru.md`
+- Text: `pyrlyn/ci` `CLA.md` "Version 1.0 (draft)" (English, canonical) and `CLA.ru.md`
   (Russian translation). Section 11 describes signing with the phrase
   `I have read the CLA Document and I hereby sign the CLA`, the data recorded (login, numeric ID,
   comment ID and time, repository and pull request) and that one signature covers all projects.
@@ -190,7 +190,7 @@ outside authors does not cover those authors.
   ("an automated check" is enough). The text is still a draft, so this needs no new version.
   Optional: a Ukrainian translation `CLA.uk.md` (none exists).
 - Version inputs: `cla-version` (for example `1.0`), `document-url` pinned to a commit of
-  `pyrlyn/infra` (`.../blob/<sha>/CLA.md`), and `document-sha256` (SHA-256 of that file). The
+  `pyrlyn/ci` (`.../blob/<sha>/CLA.md`), and `document-sha256` (SHA-256 of that file). The
   action stores all three with every signature.
 - Re-sign: input `minimum-version`. A signature with a lower version does not cover the person;
   the comment says "you signed version X, version Y is now required" with a link to the new text.
@@ -291,7 +291,7 @@ before the contents API can write to it. Back it up (for example a weekly `git c
 
 ### 3.5 Events and the reusable workflow
 
-The action stays a step inside the existing reusable workflow `pyrlyn/infra`
+The action stays a step inside the existing reusable workflow `pyrlyn/ci`
 `.github/workflows/cla.yml`; callers keep their thin `cla.yml`:
 
 - `pull_request_target`: `opened`, `synchronize`, `reopened`, `closed`.
@@ -317,10 +317,10 @@ set by the `github-actions` app; the ruleset may pin that source (integration ID
 
 - Semantic versions `v1.0.0`, …, signed annotated tags, GitHub releases with notes. A moving `v1`
   tag is a convenience only.
-- Consumers pin a full commit SHA with a `# v1.0.0` comment (as `pyrlyn/infra` does today for
+- Consumers pin a full commit SHA with a `# v1.0.0` comment (as `pyrlyn/ci` does today for
   every action; `infra` `action-pins.yml` checks it).
 - CI on every PR: lint, typecheck, tests, dist up to date. Release only from `main`.
-- Dependabot for npm and actions in `pyrlyn/cla`; Dependabot in `pyrlyn/infra` bumps the pin.
+- Dependabot for npm and actions in `pyrlyn/cla`; Dependabot in `pyrlyn/ci` bumps the pin.
 
 ## 4. Secrets and permissions
 
@@ -351,7 +351,7 @@ public.
 
 ### 5.1 Current state
 
-- `pyrlyn/infra` `.github/workflows/cla.yml` wraps Lite `v2.6.1` (`ca4a40a`). It was added in #21
+- `pyrlyn/ci` `.github/workflows/cla.yml` wraps Lite `v2.6.1` (`ca4a40a`). It was added in #21
   and turned off unless `CLA_ENABLED == 'true'` by **#27** (merged). Documentation:
   `docs/cla.md`; text: `CLA.md`, `CLA.ru.md`.
 - Draft callers, open, not merged: cox#120, rtok#636, ketch#228, runa#38, crates-packages#14
@@ -385,7 +385,7 @@ public.
       and the same for `CLA_APP_PRIVATE_KEY`.
 - [ ] (Option C instead) fine-grained PAT, stored as `CLA_SIGNATURES_TOKEN`, rotation reminder.
 
-### 5.4 Checklist: switch `pyrlyn/infra`
+### 5.4 Checklist: switch `pyrlyn/ci`
 
 - [ ] New PR in infra: in `cla.yml` replace the Lite step with `actions/create-github-app-token`
       + `pyrlyn/cla@<sha> # v1.0.0`; drop `actions: write`; add concurrency; keep `CLA_ENABLED`.

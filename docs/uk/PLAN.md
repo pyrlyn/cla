@@ -8,7 +8,7 @@
 `pyrlyn/cla` — невеликий GitHub Action, що належить організації та перевіряє в pull request'ах
 підписання Contributor License Agreement (ліцензійної угоди учасника, далі CLA) pyrlyn. Він
 замінить CLA Assistant Lite (`contributor-assistant/github-action`), який зараз обгортає
-`pyrlyn/infra` і який було архівовано 2026-03-23.
+`pyrlyn/ci` і який було архівовано 2026-03-23.
 
 ## 0. Цілі та що не входить у задачу
 
@@ -35,7 +35,7 @@
 Для плану вивчено дві кодові бази:
 
 - **Upstream** `contributor-assistant/github-action`, архівований, останній коміт `58daaf8`
-  (2026-03-23). `pyrlyn/infra` закріплює тег `v2.6.1` = `ca4a40a7d1004f18d9960b404b97e5f30a505a08`.
+  (2026-03-23). `pyrlyn/ci` закріплює тег `v2.6.1` = `ca4a40a7d1004f18d9960b404b97e5f30a505a08`.
   Ліцензія Apache-2.0.
 - **Форк** `iainmcgin/cla-github-action`, `v3.2.0` = `0d27e5a16278d4adb6b0c4b92f08ad27b0a21dc8`
   (2026-06-17). Apache-2.0. Відгалузився від `58daaf8`; зміни описано в його `CHANGELOG.md`.
@@ -85,7 +85,7 @@
 - Помилка в upstream: `src/setupClaCheck.ts` порівнює `error.status === "404"` (рядок) з числовим
   статусом, тому гілка «створити файл під час першого запуску» ніколи не виконується. З `v2.6.1`
   відсутній `cla.json` закінчується помилкою «Could not retrieve repository contents. Status:
-  404». У форку це виправлено (`c5254b2`). У `pyrlyn/infra` `docs/cla.md` зараз написано, що
+  404». У форку це виправлено (`c5254b2`). У `pyrlyn/ci` `docs/cla.md` зараз написано, що
   action створює файл сам; із закріпленою версією це не так.
 
 ### 1.3 Логіка перевірки
@@ -193,7 +193,7 @@
 
 ### 2.4 Текст CLA і версії
 
-- Текст: `pyrlyn/infra` `CLA.md` «Version 1.0 (draft)» (англійський, канонічний) і `CLA.ru.md`
+- Текст: `pyrlyn/ci` `CLA.md` «Version 1.0 (draft)» (англійський, канонічний) і `CLA.ru.md`
   (російський переклад). Розділ 11 описує підписання фразою
   `I have read the CLA Document and I hereby sign the CLA`, дані, що зберігаються (логін, числовий
   ID, ID і час коментаря, репозиторій і pull request), і те, що один підпис діє для всіх проєктів.
@@ -202,7 +202,7 @@
   (достатньо «автоматична перевірка»). Текст іще чернетка, тож нова версія не потрібна.
   Опційно: український переклад `CLA.uk.md` (його немає).
 - Inputs версії: `cla-version` (наприклад, `1.0`), `document-url`, закріплений на коміті
-  `pyrlyn/infra` (`.../blob/<sha>/CLA.md`), і `document-sha256` (SHA-256 цього файлу). Action
+  `pyrlyn/ci` (`.../blob/<sha>/CLA.md`), і `document-sha256` (SHA-256 цього файлу). Action
   зберігає всі три значення в кожному підписі.
 - Повторне підписання: input `minimum-version`. Підпис із нижчою версією людину не покриває;
   коментар пише «ви підписали версію X, тепер потрібна версія Y» з посиланням на новий текст.
@@ -307,7 +307,7 @@ contents API зможе в нього писати. Робити резервн�
 
 ### 3.5 Події та workflow для повторного використання
 
-Action залишається кроком усередині наявного reusable workflow `pyrlyn/infra`
+Action залишається кроком усередині наявного reusable workflow `pyrlyn/ci`
 `.github/workflows/cla.yml`; репозиторії, що його викликають, зберігають свій тонкий `cla.yml`:
 
 - `pull_request_target`: `opened`, `synchronize`, `reopened`, `closed`.
@@ -333,10 +333,10 @@ Rulesets вимагають status context **`pyrlyn/cla`** (а не назву 
 
 - Семантичні версії `v1.0.0`, …, підписані анотовані теги, GitHub releases з описом. Плаваючий
   тег `v1` — лише для зручності.
-- Споживачі закріплюють повний SHA коміту з коментарем `# v1.0.0` (як `pyrlyn/infra` уже робить
+- Споживачі закріплюють повний SHA коміту з коментарем `# v1.0.0` (як `pyrlyn/ci` уже робить
   для всіх actions; це перевіряє `action-pins.yml` в `infra`).
 - CI на кожен PR: lint, typecheck, тести, актуальність dist. Релізи лише з `main`.
-- Dependabot для npm і actions у `pyrlyn/cla`; Dependabot у `pyrlyn/infra` оновлює закріплення.
+- Dependabot для npm і actions у `pyrlyn/cla`; Dependabot у `pyrlyn/ci` оновлює закріплення.
 
 ## 4. Секрети та права
 
@@ -367,7 +367,7 @@ Rulesets вимагають status context **`pyrlyn/cla`** (а не назву 
 
 ### 5.1 Поточний стан
 
-- `pyrlyn/infra` `.github/workflows/cla.yml` обгортає Lite `v2.6.1` (`ca4a40a`). Додано в #21 і
+- `pyrlyn/ci` `.github/workflows/cla.yml` обгортає Lite `v2.6.1` (`ca4a40a`). Додано в #21 і
   вимкнено, доки не задано `CLA_ENABLED == 'true'`, у **#27** (змерджено). Документація:
   `docs/cla.md`; текст: `CLA.md`, `CLA.ru.md`.
 - Чернетки workflow, що викликають перевірку, відкриті, не змерджені: cox#120, rtok#636,
@@ -406,7 +406,7 @@ Rulesets вимагають status context **`pyrlyn/cla`** (а не назву 
 - [ ] (Натомість варіант C) fine-grained PAT, зберегти як `CLA_SIGNATURES_TOKEN`, поставити
       нагадування про заміну.
 
-### 5.4 Чекліст: переключити `pyrlyn/infra`
+### 5.4 Чекліст: переключити `pyrlyn/ci`
 
 - [ ] Новий PR в infra: у `cla.yml` замінити крок Lite на `actions/create-github-app-token`
       + `pyrlyn/cla@<sha> # v1.0.0`; прибрати `actions: write`; додати concurrency; залишити
