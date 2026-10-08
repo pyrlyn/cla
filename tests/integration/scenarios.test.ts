@@ -387,6 +387,81 @@ describe("pull request check", () => {
     expect(fake.statuses[0]?.state).toBe("success");
   });
 
+  it("runs the check when a comment is the sign phrase", async () => {
+    const fake = new FakeGithub();
+    fake.commits = [aliceCommit()];
+    fake.file = {
+      sha: "s1",
+      text: JSON.stringify({
+        schema: 1,
+        signatures: [
+          {
+            user: "old-login",
+            user_id: 10,
+            cla_version: "1.0",
+            document_sha256: SHA256,
+            signed_at: "2026-10-01T00:00:00Z",
+            comment_id: 3,
+            comment_url: "https://github.com/pyrlyn/cox/pull/1#issuecomment-3",
+            repository: "pyrlyn/ketch",
+            repository_id: 1,
+            pull_request: 1,
+          },
+        ],
+      }),
+    };
+    use(fake);
+    setInputs();
+    await runEvent("issue_comment", {
+      action: "created",
+      issue: { number: 12, pull_request: { url: "https://api.github.com/repos/pyrlyn/cox/pulls/12" } },
+      comment: {
+        id: 4,
+        body: PHRASE,
+        user: { login: "alice", id: 10 },
+        created_at: "2026-10-03T00:00:00Z",
+      },
+      repository: { id: 4242 },
+    });
+    expect(fake.statuses[0]).toEqual(
+      expect.objectContaining({ state: "success", sha: fake.headSha, context: "pyrlyn/cla" }),
+    );
+  });
+
+  it("ignores a comment that is neither a signature nor a recheck", async () => {
+    const fake = new FakeGithub();
+    use(fake);
+    setInputs();
+    await runEvent("issue_comment", {
+      action: "created",
+      issue: { number: 12, pull_request: { url: "https://api.github.com/repos/pyrlyn/cox/pulls/12" } },
+      comment: {
+        id: 4,
+        body: "thanks, looks good",
+        user: { login: "alice", id: 10 },
+        created_at: "2026-10-03T00:00:00Z",
+      },
+      repository: { id: 4242 },
+    });
+    expect(fake.statuses).toEqual([]);
+
+    const bot = new FakeGithub();
+    server.resetHandlers();
+    use(bot);
+    await runEvent("issue_comment", {
+      action: "created",
+      issue: { number: 12, pull_request: { url: "https://api.github.com/repos/pyrlyn/cox/pulls/12" } },
+      comment: {
+        id: 5,
+        body: PHRASE,
+        user: { login: "github-actions[bot]", id: 41898282 },
+        created_at: "2026-10-03T00:00:00Z",
+      },
+      repository: { id: 4242 },
+    });
+    expect(bot.statuses).toEqual([]);
+  });
+
   it("fails the job on bad configuration and sets no status", async () => {
     const fake = new FakeGithub();
     use(fake);
