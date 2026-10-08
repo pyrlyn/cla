@@ -1,0 +1,8 @@
+- T1. A 404 on the signatures file is misreported as "signature missing"
+- T2. Sticky comment is only found when authored by a Bot account
+- T3. Transient API failures crash the job with no status; co-author lookups are uncached N+1
+- T4. Markdown injection into the report via commit author email
+- T5. Dead code and unreachable paths
+- T6. Validate `cla_version` on read; fix `missingLogins` semantics
+- T7. Close the risky-path test gaps
+- T8. Adopt the workspace task files

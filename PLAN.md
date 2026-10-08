@@ -440,3 +440,50 @@ Order matters: always 1 before 2, otherwise PRs wait for a status that never com
 3. License of `pyrlyn/cla`: Apache-2.0?
 4. Comment language: English only with RU link, or also a Ukrainian translation of the CLA?
 5. What to do with infra drafts #23 and #20.
+
+## 7. Audit tasks (2026-10-07)
+
+Findings from a code audit on 2026-10-07. No `T` ids existed before this section; numbering starts at T1. Security posture verified good otherwise: API-only on `pull_request_target`, tokens masked, marker-takeover prevented, strict signature matching.
+
+| # | Status | Priority | Complexity | Readiness | Agent |
+| --- | --- | --- | --- | --- | --- |
+| T1 | todo | P2 | 2 | 0% | |
+| T2 | todo | P2 | 1 | 0% | |
+| T3 | todo | P2 | 2 | 0% | |
+| T4 | todo | P2 | 1 | 0% | |
+| T5 | todo | P3 | 2 | 0% | |
+| T6 | todo | P3 | 1 | 0% | |
+| T7 | todo | P2 | 2 | 0% | |
+| T8 | todo | P2 | 1 | 0% | |
+
+### T1. A 404 on the signatures file is misreported as "signature missing"
+
+`src/store.ts:106-110` turns every HTTP 404 into "file missing". An expired or mis-scoped `cla-token`, or a typo in `signatures-repository`, also yields 404 (private repo invisible to the token), so an unsigned contributor sees `failure: "CLA 1.0 signature missing"` instead of an `error` status about unreadable storage. Done means: a 404 first verifies the repository itself is readable, or the run reports an error status when storage readability was never confirmed.
+
+### T2. Sticky comment is only found when authored by a Bot account
+
+`src/check.ts:209-211` requires `comment.user?.type === "Bot"`, but `github-token` accepts a fine-grained PAT (`action.yml:10-13`) whose comments are authored by a `User` — `find` never matches and every run posts a duplicate comment with its own `target_url`. Done means: the author is matched against the token's authenticated login (`users.getAuthenticated()`).
+
+### T3. Transient API failures crash the job with no status; co-author lookups are uncached N+1
+
+`src/people.ts:168-174` and `src/allowlist.ts:55-58` tolerate only 404 — a rate-limit 403 or persistent 5xx after retries throws, and `src/check.ts:59-66` converts only `ClaCheckError` into the promised `error` status; anything else is a red job with no status at all. Legacy `login@users.noreply.github.com` trailers also trigger one uncached `GET /users/{login}` per trailer per commit (`people.ts:195-206`). Done means: resolution failures produce the error status, and resolved logins are cached per run.
+
+### T4. Markdown injection into the report via commit author email
+
+`src/report.ts:116-119` renders `row.person.email` — attacker-controlled fork-PR commit data — inside a single-backtick span; a `|` or a backtick breaks out and injects arbitrary Markdown lines into the bot comment (no XSS — GitHub sanitizes — but the report can be forged). Done means: `|` and backticks are escaped when rendering unknown emails.
+
+### T5. Dead code and unreachable paths
+
+`membership.ts:26` (204 inside catch is unreachable), `config.ts:81-82` (`signPhrase === ""` unreachable), `people.ts:213-215` (redundant loop-exit throw), the never-used `"public"` membership mode plus its tests (`check.ts:82` always passes `"token"`), and the duplicated paginated comment listing (`check.ts:152-166` vs `check.ts:200-206`). Done means: each is removed or wired, with one shared pagination helper.
+
+### T6. Validate `cla_version` on read; fix `missingLogins` semantics
+
+`store.ts:32-47` type-checks entries but not the version format, and `version.ts:15` returns 0 for NaN parts, so a corrupt entry can win `highest(mine)` (`coverage.ts:57-58`) and render "You signed version <garbage>" (display-only; `versionSatisfies` guards the decision). Also `report.ts:30` adds the impersonating opener to the `missing` output though their failure is not a missing signature. Done means: `isVersion` is enforced in `parseFile` and the output semantic is corrected.
+
+### T7. Close the risky-path test gaps
+
+Untested today: `store.ts` rejection branches (bad JSON/schema/entries, 409-exhaustion after 5 attempts, create-on-missing PUT), `lock.ts` 403 snippet matching, the real `issue_comment` signing trigger (`main.ts:93-95` — only recheck is covered), `fetchPeople` pagination guards, and the T2 PAT-comment scenario. Done means: each has a test.
+
+### T8. Adopt the workspace task files
+
+The project keeps its design document in `PLAN.md` (equal to `plan.md` on this case-insensitive volume) and lacks `todo.md`, `done.md`, `roadmap.md`, `ideas.md` required by the workspace rulebook. Done means: the design content moves to `DESIGN.md`, a rulebook-format `plan.md` task tracker holds T1–T8, and the missing files exist.
