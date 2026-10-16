@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "file": ".github/dependabot.yml",
+      "rule": "dependabot-cooldown",
+      "fingerprint": "e3fa666c98b80bb8",
+      "context": "6b34d9c46c22a194",
+      "occurrence": 0,
+      "message": "\"cooldown\" is not set in this update, so Dependabot applies its implicit cooldown of 3 days. set \"cooldown.default-days\" to at least 7 to avoid updating to a version right after its release"
+    },
+    {
+      "file": ".github/dependabot.yml",
+      "rule": "dependabot-cooldown",
+      "fingerprint": "088d189fac28b579",
+      "context": "bc96ebf5ff8c15af",
+      "occurrence": 0,
+      "message": "\"cooldown\" is not set in this update, so Dependabot applies its implicit cooldown of 3 days. set \"cooldown.default-days\" to at least 7 to avoid updating to a version right after its release"
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "rule": "concurrency-limits",
+      "fingerprint": "c41f0955d93b4ce5",
+      "context": "081b2e27040f94d3",
+      "occurrence": 0,
+      "message": "workflow has no \"concurrency:\", so every run of it executes at the same time even when a newer run supersedes the older ones. add a top-level \"concurrency:\" with a \"group:\" and \"cancel-in-progress: true\". use a group per pull request such as \"${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}\", so that a new push cancels only the older runs of the same pull request and not the runs of the others"
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "rule": "missing-timeout",
+      "fingerprint": "da63d3df38ec9890",
+      "context": "ccddbdcd4fb5c351",
+      "occurrence": 0,
+      "message": "\"timeout-minutes\" is not set at this job. Set it to avoid wasting runner minutes when the job hangs"
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "rule": "artipacked",
+      "fingerprint": "ff25553a30177702",
+      "context": "99136cb9cba87875",
+      "occurrence": 0,
+      "message": "actions/checkout leaves the GITHUB_TOKEN in the git config of the workspace, where a later step such as an artifact upload can publish it. set \"persist-credentials: false\" under \"with:\" unless a later step needs to push"
+    },
+    {
+      "file": ".github/workflows/release.yml",
+      "rule": "concurrency-limits",
+      "fingerprint": "312ac635e9911383",
+      "context": "081b2e27040f94d3",
+      "occurrence": 0,
+      "message": "workflow has no \"concurrency:\", so every run of it executes at the same time even when a newer run is started while one is running (it runs for pushed tags). add a top-level \"concurrency:\" with a \"group:\" and \"cancel-in-progress: false\", so that a new run waits for the running release or deployment to finish instead of cancelling it. a newer run that is waiting replaces an older one that is waiting, so add \"queue: max\" when no release may be skipped"
+    },
+    {
+      "file": ".github/workflows/release.yml",
+      "rule": "missing-timeout",
+      "fingerprint": "27629170a0b142d6",
+      "context": "76fd9b3924267e58",
+      "occurrence": 0,
+      "message": "\"timeout-minutes\" is not set at this job. Set it to avoid wasting runner minutes when the job hangs"
+    },
+    {
+      "file": ".github/workflows/release.yml",
+      "rule": "artipacked",
+      "fingerprint": "3e9e8eba438eca3d",
+      "context": "a7594682df97c912",
+      "occurrence": 0,
+      "message": "actions/checkout leaves the GITHUB_TOKEN in the git config of the workspace, where a later step such as an artifact upload can publish it. set \"persist-credentials: false\" under \"with:\" unless a later step needs to push"
+    }
+  ]
+}
