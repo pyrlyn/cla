@@ -26342,7 +26342,10 @@ function resultText(row, version) {
   }
 }
 function personCell(row) {
-  if (row.person.kind === "unknown") return `\`${row.person.email}\``;
+  if (row.person.kind === "unknown") {
+    const email = row.person.email.replace(/[^a-zA-Z0-9@.+-]/gu, (char) => `&#${char.codePointAt(0)};`);
+    return `<code>${email}</code>`;
+  }
   const mention = row.reason.kind === "missing" || row.reason.kind === "outdated";
   return mention ? `@${row.person.login}` : row.person.login;
 }
