@@ -275,7 +275,7 @@ describe("pull request check", () => {
     expect(fake.statuses[0]?.description).toBe(
       "Unknown commit email (not linked to GitHub): 1. See the comment.",
     );
-    expect(fake.created[0]).toContain("`dev@example.com`");
+    expect(fake.created[0]).toContain("<code>dev@example.com</code>");
     expect(fake.created[0]).toContain("https://github.com/settings/emails");
   });
 

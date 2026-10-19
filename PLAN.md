@@ -450,7 +450,6 @@ Findings from a code audit on 2026-10-07. No `T` ids existed before this section
 | T1 | todo | P2 | 2 | 0% | |
 | T2 | todo | P2 | 1 | 0% | |
 | T3 | todo | P2 | 2 | 0% | |
-| T4 | todo | P2 | 1 | 0% | |
 | T5 | todo | P3 | 2 | 0% | |
 | T6 | todo | P3 | 1 | 0% | |
 | T7 | todo | P2 | 2 | 0% | |
@@ -467,10 +466,6 @@ Findings from a code audit on 2026-10-07. No `T` ids existed before this section
 ### T3. Transient API failures crash the job with no status; co-author lookups are uncached N+1
 
 `src/people.ts:168-174` and `src/allowlist.ts:55-58` tolerate only 404 — a rate-limit 403 or persistent 5xx after retries throws, and `src/check.ts:59-66` converts only `ClaCheckError` into the promised `error` status; anything else is a red job with no status at all. Legacy `login@users.noreply.github.com` trailers also trigger one uncached `GET /users/{login}` per trailer per commit (`people.ts:195-206`). Done means: resolution failures produce the error status, and resolved logins are cached per run.
-
-### T4. Markdown injection into the report via commit author email
-
-`src/report.ts:116-119` renders `row.person.email` — attacker-controlled fork-PR commit data — inside a single-backtick span; a `|` or a backtick breaks out and injects arbitrary Markdown lines into the bot comment (no XSS — GitHub sanitizes — but the report can be forged). Done means: `|` and backticks are escaped when rendering unknown emails.
 
 ### T5. Dead code and unreachable paths
 

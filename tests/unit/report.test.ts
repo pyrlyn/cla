@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { Classified } from "../../src/coverage.js";
-import { renderComment, renderStatus, type ReportModel } from "../../src/report.js";
+import { renderComment, renderStatus, renderTable, type ReportModel } from "../../src/report.js";
 import type { Person } from "../../src/people.js";
 
 function user(login: string, id: number): Person {
@@ -70,6 +70,20 @@ describe("renderStatus", () => {
 });
 
 describe("renderComment", () => {
+  it("keeps untrusted commit emails inside a single table cell", () => {
+    const email = "dev`|\n[forged](https://example.com) <b>&</b>@example.com";
+    const table = renderTable(model([
+      row({ kind: "unknown", email, roles: ["author"] }, { kind: "unknown_email", email }),
+    ]));
+    expect(table.split("\n")).toHaveLength(3);
+    expect(table.split("\n")[2]?.split("|")).toHaveLength(4);
+    expect(table).not.toContain("`");
+    expect(table).not.toContain("[forged]");
+    expect(table).not.toContain("<b>");
+    expect(table).toContain("&#96;&#124;&#10;");
+    expect(table).toContain("&#38;");
+  });
+
   it("is one line without mentions when everyone is covered", () => {
     const text = renderComment(model([row(user("alice", 1), { kind: "member" })]));
     expect(text).toContain("All contributors are covered");
