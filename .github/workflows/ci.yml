@@ -6,6 +6,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -20,7 +24,7 @@ jobs:
       docs-only: ${{ steps.config.outputs.docs-only }}
     steps:
       - id: config
-        uses: pyrlyn/ci/.github/actions/config@4e652d891cc6e6f0be316eda1a1f9630d76a8b7e # main
+        uses: pyrlyn/ci/.github/actions/config@main
 
   # Skipped on a docs-only pull request (a skipped job counts as passed); a failed `config`
   # runs it.
@@ -30,8 +34,11 @@ jobs:
       !cancelled() && needs.config.outputs.docs-only != 'true'
       && (github.event_name != 'pull_request' || !github.event.pull_request.draft)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
