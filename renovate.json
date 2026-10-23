@@ -1,4 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["local>pyrlyn/.github:renovate-config"]
+  "extends": ["local>pyrlyn/.github:renovate-config"],
+  "packageRules": [
+    {
+      "description": "typescript-eslint 8.x supports typescript <6.1; lift once it supports 7.x",
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<6.1.0"
+    }
+  ]
 }
