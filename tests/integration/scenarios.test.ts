@@ -8,7 +8,7 @@ import { PHRASE, SHA256, aliceCommit, opened, outputs, runEvent, setInputs } fro
 
 const server = setupServer();
 
-beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+beforeAll(() => server.listen({ onUnhandledFrame: "error" }));
 afterEach(() => {
   server.resetHandlers();
   process.exitCode = undefined;
