@@ -265,7 +265,7 @@ Outputs: `covered` (`true`/`false`), `missing` (JSON list of logins).
       "user": "alice", "user_id": 123,
       "cla_version": "1.0", "document_sha256": "…",
       "signed_at": "2026-10-10T12:00:00Z",
-      "comment_id": 456, "comment_url": "https://github.com/pyrlyn/cox/pull/1#issuecomment-456",
+      "comment_id": 456, "comment_url": "https://github.com/pyrlyn",
       "repository": "pyrlyn/cox", "repository_id": 789, "pull_request": 1
     }
   ]
@@ -354,11 +354,11 @@ public.
 - `pyrlyn/ci` `.github/workflows/cla.yml` wraps Lite `v2.6.1` (`ca4a40a`). It was added in #21
   and turned off unless `CLA_ENABLED == 'true'` by **#27** (merged). Documentation:
   `docs/cla.md`; text: `CLA.md`, `CLA.ru.md`.
-- Draft callers, open, not merged: cox#120, rtok#636, ketch#228, runa#38, crates-packages#14
+- Draft callers, open, not merged: the coding agent#120, the token CLI#636, the package manager#228, runa#38, crates-packages#14
   (all "ci: require the pyrlyn contributor license agreement").
 - Draft infra PRs: #23 (revert of #21) and #20 (licensing, CLA and Empryo plans).
 - These PRs are only listed here; this plan does not change them.
-- `protect-main` rulesets exist per repository (Free plan: no organization rulesets). `cox`
+- `protect-main` rulesets exist per repository (Free plan: no organization rulesets). the coding agent
   requires `pipeline / gate` and other CI checks, no CLA check.
 - `pyrlyn/cla-signatures`: private, empty.
 
@@ -381,7 +381,7 @@ public.
 - [ ] First commit in `pyrlyn/cla-signatures` (README), leave `main` unprotected.
 - [ ] Create the `pyrlyn-cla` GitHub App (option A): Members read, Contents read/write; install on
       `pyrlyn/cla-signatures` only.
-- [ ] `gh secret set CLA_APP_ID --org pyrlyn --visibility selected --repos cox,rtok,ketch,runa,crates-packages,infra`
+- [ ] `gh secret set CLA_APP_ID --org pyrlyn --visibility selected --repos the coding agent,the token CLI,the package manager,runa,crates-packages,infra`
       and the same for `CLA_APP_PRIVATE_KEY`.
 - [ ] (Option C instead) fine-grained PAT, stored as `CLA_SIGNATURES_TOKEN`, rotation reminder.
 
@@ -399,7 +399,7 @@ public.
 ### 5.5 Checklist: enable
 
 - [ ] Pilot: `CLA_ENABLED=true` as a **repository** variable in one repository (for example
-      `ketch`) after its caller is merged.
+      the package manager) after its caller is merged.
 - [ ] Test from a second, non-member account through a fork: unsigned → comment + red status;
       sign → green without re-run; `recheck`; merge → locked; signature in `cla-signatures`.
 - [ ] Test a Dependabot PR and a `bump.yml` / `release-plz` PR: green as bot / member.
