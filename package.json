@@ -19,7 +19,7 @@
     "@octokit/plugin-retry": "^8.1.1",
     "@types/node": "^26.6.5",
     "esbuild": "^0.28.2",
-    "eslint": "^10.12.0",
+    "eslint": "^10.13.0",
     "msw": "^2.15.0",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.71.1",
