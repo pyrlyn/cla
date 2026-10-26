@@ -280,7 +280,7 @@ Outputs: `covered` (`true`/`false`), `missing` (JSON-список логінів
       "user": "alice", "user_id": 123,
       "cla_version": "1.0", "document_sha256": "…",
       "signed_at": "2026-10-10T12:00:00Z",
-      "comment_id": 456, "comment_url": "https://github.com/pyrlyn/cox/pull/1#issuecomment-456",
+      "comment_id": 456, "comment_url": "https://github.com/pyrlyn",
       "repository": "pyrlyn/cox", "repository_id": 789, "pull_request": 1
     }
   ]
@@ -370,13 +370,13 @@ Rulesets вимагають status context **`pyrlyn/cla`** (а не назву 
 - `pyrlyn/ci` `.github/workflows/cla.yml` обгортає Lite `v2.6.1` (`ca4a40a`). Додано в #21 і
   вимкнено, доки не задано `CLA_ENABLED == 'true'`, у **#27** (змерджено). Документація:
   `docs/cla.md`; текст: `CLA.md`, `CLA.ru.md`.
-- Чернетки workflow, що викликають перевірку, відкриті, не змерджені: cox#120, rtok#636,
-  ketch#228, runa#38, crates-packages#14 (усі «ci: require the pyrlyn contributor license
+- Чернетки workflow, що викликають перевірку, відкриті, не змерджені: the coding agent#120, the token CLI#636,
+  The package manager#228, runa#38, crates-packages#14 (усі «ci: require the pyrlyn contributor license
   agreement»).
 - Чернеткові PR в infra: #23 (відкат #21) і #20 (плани щодо ліцензування, CLA та Empryo).
 - Ці PR тут лише перелічено; цей план їх не змінює.
 - Rulesets `protect-main` задано в кожному репозиторії окремо (тариф Free: rulesets організації
-  недоступні). `cox` вимагає `pipeline / gate` та інші перевірки CI, перевірки CLA немає.
+  недоступні). the coding agent вимагає `pipeline / gate` та інші перевірки CI, перевірки CLA немає.
 - `pyrlyn/cla-signatures`: приватний, порожній.
 
 ### 5.2 Чекліст: зробити action
@@ -401,7 +401,7 @@ Rulesets вимагають status context **`pyrlyn/cla`** (а не назву 
 - [ ] Перший коміт у `pyrlyn/cla-signatures` (README), `main` залишити незахищеною.
 - [ ] Створити GitHub App `pyrlyn-cla` (варіант A): Members read, Contents read/write; установити
       лише на `pyrlyn/cla-signatures`.
-- [ ] `gh secret set CLA_APP_ID --org pyrlyn --visibility selected --repos cox,rtok,ketch,runa,crates-packages,infra`
+- [ ] `gh secret set CLA_APP_ID --org pyrlyn --visibility selected --repos the coding agent,the token CLI,the package manager,runa,crates-packages,infra`
       і те саме для `CLA_APP_PRIVATE_KEY`.
 - [ ] (Натомість варіант C) fine-grained PAT, зберегти як `CLA_SIGNATURES_TOKEN`, поставити
       нагадування про заміну.
@@ -422,7 +422,7 @@ Rulesets вимагають status context **`pyrlyn/cla`** (а не назву 
 ### 5.5 Чекліст: увімкнути
 
 - [ ] Пілот: `CLA_ENABLED=true` як змінна **репозиторію** в одному репозиторії (наприклад,
-      `ketch`) після merge його workflow, що викликає перевірку.
+      the package manager) після merge його workflow, що викликає перевірку.
 - [ ] Перевірити з другого акаунта, не учасника організації, через форк: без підпису → коментар
       + червоний статус; підпис → зелений без перезапуску; `recheck`; merge → обговорення
       заблоковано; підпис з'явився в `cla-signatures`.
