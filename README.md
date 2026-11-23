@@ -1,4 +1,4 @@
-# pyrlyn/cla
+<h1><picture><source media="(prefers-color-scheme: dark)" srcset="brand/logo-dark.svg"><img src="brand/logo.svg" width="32" height="32" alt="" align="absmiddle"></picture> pyrlyn/cla</h1>
 
 A GitHub Action that checks the pyrlyn Contributor License Agreement on pull requests. It replaces CLA Assistant Lite (`contributor-assistant/github-action`, archived) in the reusable `cla` workflow of [`pyrlyn/ci`](https://github.com/pyrlyn/ci).
 
